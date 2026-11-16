@@ -1,0 +1,6 @@
+Nov 12 20:12:50 lab-pc-07 kernel: usb 1-1: new high-speed USB device number 4 using xhci_hcd
+Nov 12 20:12:50 lab-pc-07 kernel: usb 1-1: SerialNumber: b3a90e17
+Nov 12 20:16:30 lab-pc-07 kernel: usb 1-1: USB disconnect, device number 4
+Nov 12 21:55:41 lab-pc-07 kernel: usb 1-1: new high-speed USB device number 5 using xhci_hcd
+Nov 12 21:55:41 lab-pc-07 kernel: usb 1-1: SerialNumber: 7d41c9e2
+Nov 12 22:03:12 lab-pc-07 kernel: usb 1-1: USB disconnect, device number 5

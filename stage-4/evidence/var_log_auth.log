@@ -1,0 +1,5 @@
+Nov 12 20:08:44 lab-pc-07 sshd[1987]: Accepted password for lecturer_k from 10.20.0.14 port 51702 ssh2
+Nov 12 20:19:10 lab-pc-07 sshd[1987]: pam_unix(sshd:session): session closed for user lecturer_k
+Nov 12 21:51:03 lab-pc-07 sshd[2210]: Accepted password for lecturer_k from 10.20.0.14 port 51744 ssh2
+Nov 12 21:51:03 lab-pc-07 sshd[2210]: pam_unix(sshd:session): session opened for user lecturer_k
+Nov 12 22:04:31 lab-pc-07 sshd[2210]: pam_unix(sshd:session): session closed for user lecturer_k

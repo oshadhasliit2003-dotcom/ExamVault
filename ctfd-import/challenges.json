@@ -1,0 +1,96 @@
+{
+  "ctf_name": "ExamVault: The Leaked Paper",
+  "flag_case_sensitive": true,
+  "challenges": [
+    {
+      "stage": "stage-1",
+      "name": "EV-01: The Anonymous Tip",
+      "category": "OSINT",
+      "value": 50,
+      "max_attempts": 10,
+      "connection_info": "http://<LAB_HOST>:8081",
+      "description": "Halcyon Ridge University has received an anonymous tip that an exam paper has leaked. You are an authorized investigator.\n\nUsing only the pages in this lab, find out **who raised the tip** and **which paper it concerns**.\n\n**Flag format:** `EXAM{memberid_papercode}` in lowercase, with no hyphens. Example of the shape only: `EXAM{soc0000_ab0000}`.",
+      "files": [],
+      "hints": [
+        {"cost": 5,  "content": "The tip has a timestamp. Where else is that time mentioned?"},
+        {"cost": 8,  "content": "Two forum posts share one timestamp. Which one talks about the module named in the notice?"},
+        {"cost": 10, "content": "Match the forum handle exactly. A similar-looking handle belongs to a different person."}
+      ]
+    },
+    {
+      "stage": "stage-2",
+      "name": "EV-02: The Study Notes Image",
+      "category": "Steganography",
+      "value": 75,
+      "max_attempts": 10,
+      "connection_info": "",
+      "description": "The Examinations Office was sent a photo of a study-group revision board. Investigators think the file carries more than it shows.\n\nExamine the image and recover the hidden reference.\n\n**Flag format:** `EXAM{descriptive_token}`",
+      "files": ["stage-2/files/study_notes.jpg"],
+      "hints": [
+        {"cost": 8,  "content": "Not everything in an image file is pixels."},
+        {"cost": 11, "content": "Cameras and editors store extra information inside the file. A metadata viewer will show it."},
+        {"cost": 15, "content": "Look at the free-text fields, not the technical ones such as exposure."}
+      ]
+    },
+    {
+      "stage": "stage-3",
+      "name": "EV-03: The Group Chat Message",
+      "category": "Cryptography",
+      "value": 100,
+      "max_attempts": 10,
+      "connection_info": "",
+      "description": "A chat export from a revision group was recovered. One message is not readable as plain text.\n\nDecode the attachment note and read the message.\n\n**Flag format:** `EXAM{descriptive_token}`",
+      "files": ["stage-3/files/chat_export.txt"],
+      "hints": [
+        {"cost": 10, "content": "The note has more than one layer. Peel the outer one first."},
+        {"cost": 15, "content": "After the first layer you get letters only. That pattern suggests a classic cipher that needs a keyword."},
+        {"cost": 20, "content": "Read the chat around the note. The crew talks about a place and \"the same word as always\"."}
+      ]
+    },
+    {
+      "stage": "stage-4",
+      "name": "EV-04: The Lecturer's Laptop",
+      "category": "Digital Forensics",
+      "value": 150,
+      "max_attempts": 10,
+      "connection_info": "",
+      "description": "A lab computer used by a lecturer account was imaged. Work out **when the exam paper was copied** and **which USB device was used**.\n\nAll times in the evidence are UTC.\n\n**Flag format:** `EXAM{usbserial_HHMM}`: the serial number of the USB device that held the copy (lowercase) and the UTC time of the copy in 24-hour form with no colon.",
+      "files": ["stage-4/evidence.tar.gz"],
+      "hints": [
+        {"cost": 15, "content": "Shell history can store a timestamp before each command. Learn how to read it."},
+        {"cost": 23, "content": "Several files were copied that evening. Only one is the exam paper."},
+        {"cost": 30, "content": "Match the copy time against the USB attach and detach events in the system log."}
+      ]
+    },
+    {
+      "stage": "stage-5",
+      "name": "EV-05: The Forgotten Exam Portal",
+      "category": "Web Security",
+      "value": 200,
+      "max_attempts": 15,
+      "connection_info": "http://<LAB_HOST>:8085",
+      "description": "The faculty's old exam portal is still online. A guest account was left for students:\n\n`student_guest` / `guest2026`\n\nSign in, study how the portal shows records, and find the **internal review reference** held by the Examinations Office.\n\nOnly test the portal at the lab address above.\n\n**Flag format:** `EXAM{descriptive_token}`",
+      "files": [],
+      "hints": [
+        {"cost": 20, "content": "Look carefully at the URL of a record you are allowed to open."},
+        {"cost": 30, "content": "The portal checks that you are logged in. Does it check that the record is yours?"},
+        {"cost": 40, "content": "Record numbers are sequential. Try numbers close to the ones you already have."}
+      ]
+    },
+    {
+      "stage": "stage-6",
+      "name": "EV-06: The Exfiltration Trail",
+      "category": "Networking",
+      "value": 250,
+      "max_attempts": 15,
+      "connection_info": "",
+      "description": "The network team captured traffic from the lab network around the time the exam paper left the campus. This is the final stage: use what you learned in the earlier stages.\n\nAnalyse the capture, find the upload that carried the leaked exam paper, and work out **who uploaded it** and **where it went**.\n\n**Flag format:** `EXAM{memberid_service}`: the society member ID of the uploader (lowercase, no hyphen) and the first label of the destination host name.",
+      "files": ["stage-6/files/network_capture.pcap"],
+      "hints": [
+        {"cost": 25, "content": "Not all web traffic uses port 80. Look at the busiest non-standard port."},
+        {"cost": 38, "content": "Some streams are not decoded as HTTP automatically. Follow the TCP stream or tell your tool how to decode that port."},
+        {"cost": 50, "content": "Three uploads exist. The module code you met in Stage 1 tells you which one matters. The people from Stage 1 help with the rest."}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+name: examvault-ctfd
+services:
+  ctfd:
+    image: ctfd/ctfd:latest
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - UPLOAD_FOLDER=/var/uploads
+      - DATABASE_URL=mysql+pymysql://ctfd:${DB_PASSWORD:?set DB_PASSWORD in .env}@db/ctfd
+      - REDIS_URL=redis://cache:6379
+      - SECRET_KEY=${CTFD_SECRET_KEY:?set CTFD_SECRET_KEY in .env}
+      - WORKERS=1
+      - LOG_FOLDER=/var/log/CTFd
+      - ACCESS_LOG=-
+      - ERROR_LOG=-
+      - REVERSE_PROXY=false
+    volumes:
+      - ctfd_logs:/var/log/CTFd
+      - ctfd_uploads:/var/uploads
+    depends_on:
+      db:
+        condition: service_healthy
+      cache:
+        condition: service_started
+    networks: [platform_net]
+  db:
+    image: mariadb:10.11
+    restart: unless-stopped
+    environment:
+      - MARIADB_ROOT_PASSWORD=${DB_ROOT_PASSWORD:?set DB_ROOT_PASSWORD in .env}
+      - MARIADB_USER=ctfd
+      - MARIADB_PASSWORD=${DB_PASSWORD:?set DB_PASSWORD in .env}
+      - MARIADB_DATABASE=ctfd
+    volumes:
+      - dbdata:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 20s
+    networks: [platform_net]
+  cache:
+    image: redis:7-alpine
+    restart: unless-stopped
+    networks: [platform_net]
+networks:
+  platform_net:
+    driver: bridge
+volumes:
+  dbdata:
+  ctfd_logs:
+  ctfd_uploads:

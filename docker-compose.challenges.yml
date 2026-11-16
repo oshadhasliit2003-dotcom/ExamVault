@@ -1,0 +1,35 @@
+# Challenge containers. Only stage 1 (static site) and stage 5 (vulnerable portal) run live.
+# Stages 2, 3, 4 and 6 are file downloads served by CTFd (no container).
+name: examvault-challenges
+services:
+  ev01:
+    build: ./stage-1
+    container_name: ev01
+    restart: unless-stopped
+    ports:
+      - "8081:8080"
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    mem_limit: 128m
+    pids_limit: 100
+    networks: [challenge_net]
+  ev05:
+    build: ./stage-5
+    container_name: ev05
+    restart: unless-stopped
+    ports:
+      - "8085:5000"
+    environment:
+      - FLAG=${EV05_FLAG:?set EV05_FLAG in .env}
+      - SECRET_KEY=${EV05_SECRET_KEY:?set EV05_SECRET_KEY in .env}
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    mem_limit: 256m
+    pids_limit: 100
+    networks: [challenge_net]
+networks:
+  challenge_net:
+    driver: bridge
